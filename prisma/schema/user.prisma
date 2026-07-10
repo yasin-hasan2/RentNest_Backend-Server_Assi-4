@@ -10,6 +10,8 @@ model User {
   role        UserRole
   status      UserStatus    @default(ACTIVE)
 
+  profile Profile?
+  
   properties  Property[]
   rentals     RentalRequest[]
   reviews     Review[]

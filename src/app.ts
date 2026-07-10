@@ -3,6 +3,10 @@ import cors from "cors";
 import config from "./config";
 import cookieParser from "cookie-parser";
 import httpStatus from "http-status";
+import { notFound } from "./middlewares/notFound";
+import { globalErrorHandler } from "./middlewares/globalErrorHendler";
+import { userRoutes } from "./modules/user/user.route";
+import { authRoutes } from "./modules/auth/auth.routes";
 
 const app: Application = express();
 
@@ -22,7 +26,7 @@ app.get("/", (req: Request, res: Response) => {
     res.status(httpStatus.OK).json({
       success: true,
       statusCode: httpStatus.OK,
-      message: "Welcome to the Prisma Press API!",
+      message: "Welcome to the RentNest API!",
     });
   } catch (error) {
     console.error("Error occurred while handling the request:", error);
@@ -33,5 +37,11 @@ app.get("/", (req: Request, res: Response) => {
     });
   }
 });
+
+app.use("/api/users", userRoutes);
+app.use("/api/auth", authRoutes);
+
+app.use(notFound);
+app.use(globalErrorHandler);
 
 export default app;
