@@ -18,3 +18,19 @@ export interface ICreateProperty {
   images: string[];
   categoryId: string;
 }
+
+export interface IPropertyQuery {
+  searchTerm?: string;
+  location?: string;
+  category?: string;
+  status?: string;
+
+  minPrice?: string;
+  maxPrice?: string;
+
+  page?: string;
+  limit?: string;
+
+  sortBy?: string;
+  sortOrder?: "asc" | "desc";
+}
