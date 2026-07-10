@@ -1,20 +1,27 @@
-
-
-
 model Property {
   id            String   @id @default(uuid())
+
   title         String
   description   String
+
   location      String
+  address       String?
+
   rentPrice     Float
+
   bedrooms      Int
   bathrooms     Int
   area          Float
+
+  propertyType  PropertyType
+
   amenities     String[]
+  images        String[]
+
   status        PropertyStatus @default(AVAILABLE)
 
   landlordId    String
-  landlord      User @relation(fields: [landlordId], references: [id])
+  landlord      User @relation(fields: [landlordId], references: [id], onDelete: Cascade)
 
   categoryId    String
   category      Category @relation(fields: [categoryId], references: [id])
@@ -24,5 +31,6 @@ model Property {
 
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-}
 
+  @@map("properties")
+}

@@ -15,6 +15,15 @@ enum PropertyStatus {
   UNAVAILABLE
 }
 
+enum PropertyType {
+  APARTMENT
+  HOUSE
+  STUDIO
+  DUPLEX
+  VILLA
+  OFFICE
+}
+
 enum RentalStatus {
   PENDING
   APPROVED
