@@ -1,3 +1,5 @@
+import { PropertyStatus } from "../../../generated/prisma/enums";
+
 export interface ICreateProperty {
   title: string;
   description: string;
@@ -33,4 +35,18 @@ export interface IPropertyQuery {
 
   sortBy?: string;
   sortOrder?: "asc" | "desc";
+}
+
+export interface IUpdateProperty {
+  title?: string;
+  description?: string;
+  location?: string;
+  address?: string;
+  rentPrice?: number;
+  bedrooms?: number;
+  bathrooms?: number;
+  area?: number;
+  amenities?: string[];
+  status?: PropertyStatus;
+  categoryId?: string;
 }

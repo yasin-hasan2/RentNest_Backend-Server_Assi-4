@@ -1,6 +1,12 @@
+import httpStatus from "http-status";
 import { Prisma, PropertyStatus } from "../../../generated/prisma/client";
+import AppError from "../../errors/AppError";
 import { prisma } from "../../lib/prisma";
-import { ICreateProperty, IPropertyQuery } from "./property.interface";
+import {
+  ICreateProperty,
+  IPropertyQuery,
+  IUpdateProperty,
+} from "./property.interface";
 
 const createPropertyIntoDB = async (
   landlordId: string,
@@ -205,7 +211,137 @@ const getAllPropertiesFromDB = async (query: IPropertyQuery) => {
   };
 };
 
+const getSinglePropertyFromDB = async (propertyId: string) => {
+  const property = await prisma.property.findUniqueOrThrow({
+    where: {
+      id: propertyId,
+    },
+
+    include: {
+      landlord: {
+        omit: {
+          password: true,
+        },
+      },
+
+      category: true,
+
+      reviews: {
+        include: {
+          tenant: {
+            omit: {
+              password: true,
+            },
+          },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+
+      _count: {
+        select: {
+          rentals: true,
+          reviews: true,
+        },
+      },
+    },
+  });
+
+  return property;
+};
+
+const updatePropertyIntoDB = async (
+  propertyId: string,
+  landlordId: string,
+  payload: IUpdateProperty,
+) => {
+  const existingProperty = await prisma.property.findUnique({
+    where: {
+      id: propertyId,
+    },
+  });
+
+  if (!existingProperty) {
+    throw new Error("Property not found");
+  }
+
+  // Check ownership
+  if (existingProperty.landlordId !== landlordId) {
+    throw new Error("You are not authorized to update this property");
+  }
+
+  const updatedProperty = await prisma.property.update({
+    where: {
+      id: propertyId,
+    },
+
+    data: {
+      title: payload.title,
+      description: payload.description,
+      location: payload.location,
+      address: payload.address,
+      rentPrice: payload.rentPrice,
+      bedrooms: payload.bedrooms,
+      bathrooms: payload.bathrooms,
+      area: payload.area,
+      amenities: payload.amenities,
+      status: payload.status,
+
+      ...(payload.categoryId && {
+        category: {
+          connect: {
+            id: payload.categoryId,
+          },
+        },
+      }),
+    },
+
+    include: {
+      landlord: {
+        omit: {
+          password: true,
+        },
+      },
+
+      category: true,
+    },
+  });
+
+  return updatedProperty;
+};
+
+const deletePropertyFromDB = async (propertyId: string, landlordId: string) => {
+  const existingProperty = await prisma.property.findUnique({
+    where: {
+      id: propertyId,
+    },
+  });
+
+  if (!existingProperty) {
+    throw new AppError(httpStatus.NOT_FOUND, "Property not found");
+  }
+
+  if (existingProperty.landlordId !== landlordId) {
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      "You are not authorized to delete this property",
+    );
+  }
+
+  const deletedProperty = await prisma.property.delete({
+    where: {
+      id: propertyId,
+    },
+  });
+
+  return deletedProperty;
+};
+
 export const propertyService = {
   createPropertyIntoDB,
   getAllPropertiesFromDB,
+  getSinglePropertyFromDB,
+  updatePropertyIntoDB,
+  deletePropertyFromDB,
 };

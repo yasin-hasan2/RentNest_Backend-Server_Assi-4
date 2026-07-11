@@ -10,6 +10,7 @@ export interface RegisterUserPayload {
 export interface IUpdateProfile {
   name?: string;
   email?: string;
+  phone?: string;
   bio?: string;
   profilePhoto?: string;
 }
