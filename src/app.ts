@@ -10,6 +10,7 @@ import { authRoutes } from "./modules/auth/auth.routes";
 import { propertyRoutes } from "./modules/properties/property.route";
 import { categoryRoutes } from "./modules/category/category.route";
 import { rentalRoutes } from "./modules/rental/rental.route";
+import { adminRoute } from "./modules/admin/admin.route";
 
 const app: Application = express();
 
@@ -42,6 +43,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api/users", userRoutes);
+app.use("/api/admin", adminRoute);
 app.use("/api/auth", authRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/landlord/properties", propertyRoutes);

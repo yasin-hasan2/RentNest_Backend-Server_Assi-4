@@ -56,36 +56,40 @@ const getSingleRentalRequest = catchAsync(
   },
 );
 
-const getLandlordRequests = catchAsync(async (req, res) => {
-  const landlordId = req.user!.id;
+const getLandlordRequests = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const landlordId = req.user!.id;
 
-  const result = await rentalService.getLandlordRequestsFromDB(landlordId);
+    const result = await rentalService.getLandlordRequestsFromDB(landlordId);
 
-  sendResponse(res, {
-    success: true,
-    statusCode: httpStatus.OK,
-    message: "Rental requests retrieved successfully",
-    data: result,
-  });
-});
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Rental requests retrieved successfully",
+      data: result,
+    });
+  },
+);
 
-const updateRentalRequestStatus = catchAsync(async (req, res) => {
-  const landlordId = req.user!.id;
-  const rentalId = req.params.id;
+const updateRentalRequestStatus = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const landlordId = req.user!.id;
+    const rentalId = req.params.id;
 
-  const result = await rentalService.updateRentalRequestStatusIntoDB(
-    rentalId as string,
-    landlordId,
-    req.body.status,
-  );
+    const result = await rentalService.updateRentalRequestStatusIntoDB(
+      rentalId as string,
+      landlordId,
+      req.body.status,
+    );
 
-  sendResponse(res, {
-    success: true,
-    statusCode: httpStatus.OK,
-    message: "Rental request updated successfully",
-    data: result,
-  });
-});
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Rental request updated successfully",
+      data: result,
+    });
+  },
+);
 
 export const rentalController = {
   createRentalRequest,

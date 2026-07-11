@@ -12,6 +12,7 @@ router.get(
   auth(UserRole.ADMIN, UserRole.LANDLORD, UserRole.TENANT),
   userController.getMyProfile,
 );
+
 router.put(
   "/my-profile",
   auth(UserRole.ADMIN, UserRole.LANDLORD, UserRole.TENANT),
