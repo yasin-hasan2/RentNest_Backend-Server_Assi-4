@@ -16,7 +16,7 @@ A scalable and secure RESTful API for a rental property marketplace where tenant
 
 ## 📂 GitHub Repository
 
-> https://github.com/your-username/rentnest-backend
+> https://github.com/yasin-hasan2/RentNest_Backend-Server_Assi-4.git
 
 ---
 
