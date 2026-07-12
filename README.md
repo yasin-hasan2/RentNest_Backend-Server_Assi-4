@@ -6,7 +6,7 @@ A scalable and secure RESTful API for a rental property marketplace where tenant
 
 ## 🚀 Live API
 
-> https://your-vercel-url.vercel.app
+> https://rent-nest-assi-4.vercel.app
 
 ## 📖 API Documentation
 
