@@ -324,7 +324,7 @@ Backend is deployed on **Vercel**.
 
 GitHub: https://github.com/yasin-hasan2
 
-Email: yasin.steadfast@gmail.com
+Email: yaseenalhassan2@gmail.com
 
 ---
 
